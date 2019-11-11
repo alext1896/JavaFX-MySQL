@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<personas>
+    <persona>
+        <city>Alguna ciudad</city>
+        <firstName>asdf</firstName>
+        <lastName>asdf</lastName>
+        <nacimiento>1996-12-18</nacimiento>
+        <postalCode>1234</postalCode>
+        <street>Alguna calle</street>
+    </persona>
+    <persona>
+        <city>Alguna ciudad</city>
+        <firstName>fff</firstName>
+        <lastName>fdddsd</lastName>
+        <nacimiento>1996-12-18</nacimiento>
+        <postalCode>1234</postalCode>
+        <street>Alguna calle</street>
+    </persona>
+    <persona>
+        <city>Alguna ciudaddddd</city>
+        <firstName>sdddddd</firstName>
+        <lastName>dddddd</lastName>
+        <nacimiento>1996-12-18</nacimiento>
+        <postalCode>1234</postalCode>
+        <street>Alguna calleddd</street>
+    </persona>
+</personas>
