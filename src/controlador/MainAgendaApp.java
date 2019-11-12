@@ -182,31 +182,32 @@ public class MainAgendaApp extends Application {
 	     * 
 	     * @param file the file or null to remove the path
 	     */
-	    public void setPersonFilePath(File file) {
-	        Preferences prefs = Preferences.userNodeForPackage(MainAgendaApp.class);
-	        if (file != null) {
-	            prefs.put("filePath", file.getPath());
-
-	            // Update the stage title.
-	            primaryStage.setTitle("AgendaApp - " + file.getName());
-	        } else {
-	            prefs.remove("filePath");
-
-	            // Update the stage title.
-	            primaryStage.setTitle("AgendaApp");
-	        }
-	    }
-	    
+//	    public void setPersonFilePath(File file) {
+//	        Preferences prefs = Preferences.userNodeForPackage(MainAgendaApp.class);
+//	        if (file != null) {
+//	            prefs.put("filePath", file.getPath());
+//
+//	            // Update the stage title.
+//	            primaryStage.setTitle("AgendaApp - " + file.getName());
+//	        } else {
+//	            prefs.remove("filePath");
+//
+//	            // Update the stage title.
+//	            primaryStage.setTitle("AgendaApp");
+//	        }
+//	    }
+//	    
 	    
 	    public void loadPersonDataFromBaseData() {
 	        try {
-	        	ODB odb = ODBFactory.open ("/datos/usuarios/alumnos/jose.guapache/Descargas/neodatis-odb-1.9.30-689/doc/agendaNeoDatis.db");
+	        	ODB odb = ODBFactory.open ("BaseDatosNeoDatis.odb");
 	        	Objects <Persona> objects = odb.getObjects(Persona.class);
 	        	
 	        	while (objects.hasNext()) {
 	        		Persona persona = objects.next();
 	        		personData.add(persona);
 	        	}
+	        	odb.close();
 	        } catch (Exception e) { // catches ANY exception
 	            Alert alert = new Alert(AlertType.ERROR);
 	            alert.setTitle("Error");
@@ -221,30 +222,30 @@ public class MainAgendaApp extends Application {
 	     * 
 	     * @param file
 	     */
-	    public void savePersonDataToFile(File file) {
-	        try {
-	            JAXBContext context = JAXBContext.newInstance(ListaPersonaXml.class);
-	            Marshaller m = context.createMarshaller();
-	            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-	            // Wrapping our person data.
-	            ListaPersonaXml wrapper = new ListaPersonaXml();
-	            wrapper.setPersons(personData);
-
-	            // Marshalling and saving XML to the file.
-	            m.marshal(wrapper, file);
-
-	            // Save the file path to the registry.
-	            setPersonFilePath(file);
-	        } catch (Exception e) { // catches ANY exception
-	            Alert alert = new Alert(AlertType.ERROR);
-	            alert.setTitle("Error");
-	            alert.setHeaderText("No se pudo guardar los datos");
-	            alert.setContentText("No se pudo guardar los datos en el fichero:\n" + file.getPath());
-
-	            alert.showAndWait();
-	        }
-	    }
+//	    public void savePersonDataToFile(File file) {
+//	        try {
+//	            JAXBContext context = JAXBContext.newInstance(ListaPersonaXml.class);
+//	            Marshaller m = context.createMarshaller();
+//	            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//
+//	            // Wrapping our person data.
+//	            ListaPersonaXml wrapper = new ListaPersonaXml();
+//	            wrapper.setPersons(personData);
+//
+//	            // Marshalling and saving XML to the file.
+//	            m.marshal(wrapper, file);
+//
+//	            // Save the file path to the registry.
+//	            setPersonFilePath(file);
+//	        } catch (Exception e) { // catches ANY exception
+//	            Alert alert = new Alert(AlertType.ERROR);
+//	            alert.setTitle("Error");
+//	            alert.setHeaderText("No se pudo guardar los datos");
+//	            alert.setContentText("No se pudo guardar los datos en el fichero:\n" + file.getPath());
+//
+//	            alert.showAndWait();
+//	        }
+//	    }
 	    
 	    /**
 	     * Opens a dialog to show birthday statistics.

@@ -65,7 +65,7 @@
                            </HBox.margin>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#handleEditPerson" text="Editar" />
-                        <Button mnemonicParsing="false" onAction="#handleDeletePerson" text="Borrar">
+                        <Button mnemonicParsing="false" onAction="#borrarPersonaBaseData" text="Borrar">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>

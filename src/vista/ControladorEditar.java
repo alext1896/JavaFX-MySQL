@@ -1,7 +1,5 @@
 package vista;
 
-import org.neodatis.odb.ODB;
-import org.neodatis.odb.ODBFactory;
 
 import controlador.UtilesData;
 import javafx.fxml.FXML;

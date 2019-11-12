@@ -1,12 +1,8 @@
 package vista;
 
-
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
-import org.neodatis.odb.core.query.IQuery;
-import org.neodatis.odb.core.query.criteria.Where;
-import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 
 import controlador.MainAgendaApp;
 import controlador.UtilesData;
@@ -89,21 +85,25 @@ public class ControladorPersona {
      * Called when the user clicks on the delete button.
      */
     @FXML
-    private void handleDeletePerson() {
+    public void borrarPersonaBaseData() {
         int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
+        
         if (selectedIndex >= 0) {
-            
-            Persona person = new Persona ();
-            person = personTable.getItems().get(selectedIndex);
-            
-            ODB odb = ODBFactory.open ("/datos/usuarios/alumnos/jose.guapache/Descargas/neodatis-odb-1.9.30-689/doc/agendaNeoDatis.db");
-        	IQuery query = new CriteriaQuery (Persona.class, Where.equal("idpersona", person.getIdPersona()));
+        	Persona ptemp = personTable.getSelectionModel().getSelectedItem();
+        	
+        	ODB odb = ODBFactory.open ("BaseDatosNeoDatis.odb");
         	
         	try {
-    			Objects <Persona> personas = odb.getObjects(query);
-    			Persona personaBorrar = (Persona) odb.getObjects(query).getFirst();
-    			odb.delete(personaBorrar);
-    			odb.commit();
+    			Objects <Persona> personas = odb.getObjects(Persona.class);
+    			while (personas.hasNext()) {
+    				Persona p = personas.next();
+    				if (p.getIdPersona() == ptemp.getIdPersona()) {
+    					odb.delete(p);
+    					personTable.getItems().remove(selectedIndex);
+
+    				}
+    				
+    			}
            	}catch (Exception e) { // catches ANY exception
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
@@ -116,8 +116,6 @@ public class ControladorPersona {
                	odb.close();
            		}
            	}
-            personTable.getItems().remove(selectedIndex);
-            
         } else {
             // Nothing selected.
             Alert alert = new Alert(AlertType.WARNING);
@@ -128,32 +126,7 @@ public class ControladorPersona {
 
             alert.showAndWait();
         }
-        
     }
-    
-    public void borrarPersonaBaseData(Persona persona) {
-    	ODB odb = ODBFactory.open ("/datos/usuarios/alumnos/jose.guapache/Descargas/neodatis-odb-1.9.30-689/doc/agendaNeoDatis.db");
-    	IQuery query = new CriteriaQuery (Persona.class, Where.equal("idpersona", persona.getIdPersona()));
-    	
-    	try {
-			Objects <Persona> personas = odb.getObjects(query);
-			Persona personaBorrar = (Persona) odb.getObjects(query).getFirst();
-			
-			odb.delete(personaBorrar);
-       	}catch (Exception e) { // catches ANY exception
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No se puede cargar los datos");
-
-            alert.showAndWait();
-       	}finally {
-       		if (odb != null) {
-        // Close the database
-           	odb.close();
-       		}
-       	}
-    }
-
     
     /**
      * Called when the user clicks the new button. Opens a dialog to edit
@@ -164,17 +137,39 @@ public class ControladorPersona {
         Persona tempPerson = new Persona();
         boolean okClicked = mainApp.showPersonEditDialog(tempPerson);
         if (okClicked) {
+        	int id = -1;
             mainApp.getPersonData().add(tempPerson);
-			 
-			 ODB odb = ODBFactory.open ("/datos/usuarios/alumnos/jose.guapache/Descargas/neodatis-odb-1.9.30-689/doc/agendaNeoDatis.db");
+			ODB odb = ODBFactory.open ("BaseDatosNeoDatis.odb");
 				try {
+					Objects <Persona> lista = odb.getObjects(Persona.class);
+					if (lista.isEmpty()) {
+						id = 1;
+					}else {
+						id = obtenerId(lista);
+						id++;
+					}
+					
+					tempPerson.setIdPersona(id);
 					odb.store(tempPerson);
-					odb.commit();
-				} finally {
+					
+				}catch (Exception e ) {
+					e.printStackTrace();
+				}finally {
 		             // Close the database
-		         	odb.close();
+					odb.close();
 			}
         }
+    }
+    
+    public int obtenerId (Objects<Persona> lista) {
+    	int id = 0;
+    	while (lista.hasNext()) {
+    		Persona persona = (Persona) lista.next();
+    		if (persona.getIdPersona() > id) {
+    			id = persona.getIdPersona();
+    		}
+    	}
+    	return id;
     }
 
     /**
@@ -205,21 +200,26 @@ public class ControladorPersona {
     
     public void editarPersonaBaseData(Persona persona) {
         try {
-        	ODB odb = ODBFactory.open ("/datos/usuarios/alumnos/jose.guapache/Descargas/neodatis-odb-1.9.30-689/doc/agendaNeoDatis.db");
-        	IQuery query = new CriteriaQuery (Persona.class, Where.equal("idpersona", persona.getIdPersona()));
-        	
+        	ODB odb = ODBFactory.open ("BaseDatosNeoDatis.odb");
         	try {
-    			Objects <Persona> personas = odb.getObjects(query);
-    			Persona personaModificar = (Persona) odb.getObjects(query).getFirst();
+    			Objects <Persona> personas = odb.getObjects(Persona.class);
     			
-    			personaModificar.setFirstName(persona.getFirstName());
-    			personaModificar.setLastName(persona.getLastName());
-    			personaModificar.setStreet(persona.getStreet());
-    			personaModificar.setPostalCode(persona.getPostalCode());
-    			personaModificar.setCity(persona.getCity());
-    			personaModificar.setBirthday(persona.getNacimiento());
+    			while (personas.hasNext()) {
+    				Persona p = personas.next();
+    				
+    				if (p.getIdPersona() == persona.getIdPersona()) {
+    					p.setFirstName(persona.getFirstName());
+    	    			p.setLastName(persona.getLastName());
+    	    			p.setStreet(persona.getStreet());
+    	    			p.setPostalCode(persona.getPostalCode());
+    	    			p.setCity(persona.getCity());
+    	    			p.setBirthday(persona.getNacimiento());
+    	    			
+    	    			odb.store(p);
+    				}
+    			}
     			
-    			odb.store(personaModificar);
+    			
     			
            	}catch (Exception e) { // catches ANY exception
                 Alert alert = new Alert(AlertType.ERROR);

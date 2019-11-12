@@ -41,7 +41,7 @@ public class Persona {
      * @param lastName
      */
 	public Persona(String nombre, String apellido) {
-		this.idpersona = new SimpleIntegerProperty (1);
+		this.idpersona = new SimpleIntegerProperty ();
         this.nombre = new SimpleStringProperty(nombre);
         this.apellido = new SimpleStringProperty(apellido);
         

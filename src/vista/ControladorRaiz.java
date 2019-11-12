@@ -27,7 +27,6 @@ public class ControladorRaiz {
     @FXML
     private void handleNew() {
         mainApp.getPersonData().clear();
-        mainApp.setPersonFilePath(null);
     }
 
     /**
