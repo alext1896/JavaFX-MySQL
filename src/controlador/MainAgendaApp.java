@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
@@ -22,7 +19,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import modelo.ListaPersonaXml;
 import modelo.Persona;
 import vista.ControladorEditar;
 import vista.ControladorEstadistica;

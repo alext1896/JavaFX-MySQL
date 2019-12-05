@@ -56,7 +56,7 @@ public class ControladorRaiz {
     private void handleSave() {
         File personFile = mainApp.getPersonFilePath();
         if (personFile != null) {
-            mainApp.savePersonDataToFile(personFile);
+//            mainApp.savePersonDataToFile(personFile);
         } else {
             handleSaveAs();
         }
@@ -81,7 +81,7 @@ public class ControladorRaiz {
             if (!file.getPath().endsWith(".xml")) {
                 file = new File(file.getPath() + ".xml");
             }
-            mainApp.savePersonDataToFile(file);
+//            mainApp.savePersonDataToFile(file);
         }
     }
 
